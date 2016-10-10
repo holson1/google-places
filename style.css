@@ -1,0 +1,52 @@
+h1,h2,h3,h4 {
+    font-family: 'Roboto', sans-serif;
+}
+
+p,span,a,li,input {
+    font-family: 'Roboto', sans-serif;
+}
+
+.results {
+    background-color: #eee;
+}
+
+.result {
+    height: 50px;
+    margin-bottom: 10px;
+    background-color: #ccc;
+}
+
+#search-bar {
+    width: 100%;
+    height: 35px;
+    margin-bottom: 10px;
+    font-size: 18px;
+}
+
+.button-area {
+    padding-left: 0px !important;
+}
+
+#search-button {
+    border: 0px;
+    background: none;
+}
+
+#search-button:hover {
+    color: #58d;
+}
+
+#search-warning {
+    color: #b00;
+    font-weight: bold;
+    margin-top: 5px;
+}
+
+.map-area {
+    height: 400px;
+    padding-right: 0px !important;
+}
+
+#map {
+    height: 100%;
+}

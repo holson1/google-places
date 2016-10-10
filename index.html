@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Google Places</title>
+    <meta name="viewport" content="initial-scale=1.0">
+    <meta charset="utf-8">
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300" rel="stylesheet">
+    <script src="https://use.fontawesome.com/e246b2bd67.js"></script>
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12 col-sm-8 col-sm-offset-1">
+                <h2 class="main-header">Google Places Search</h2>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-10 col-sm-5 col-sm-offset-1">
+                <input id="search-bar" placeholder="Search for places! Ex: 'pizza in Portland'"/>
+            </div>
+            <div class="col-xs-1 button-area">
+                <button id="search-button"><i class="fa fa-search fa-2x"></i></button>
+            </div>
+            <div class="col-xs-12 col-sm-5">
+                <p id="search-warning"></p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="map-area col-xs-7 col-sm-6 col-sm-offset-1">
+                <div id="map"></div>
+            </div>
+            <div id="results" class="results col-xs-5 col-sm-4">
+                <div class="row result">
+                    <div class="col-xs-12">
+                        <p>Type a search and your results will appear here!</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    
+    <!-- jQuery (required for Bootstrap) -->
+    <script src="http://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script> 
+    <!-- Google Maps Places API -->
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAEquPt-M434Myb0MDLAtm9cOjoWf_nRDw&callback=initMap&libraries=places" async defer></script>
+    <!-- Bootstrap -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <!-- my js -->
+    <script type="text/javascript" src="maps.js"></script>
+</body>
+</html>
