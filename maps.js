@@ -40,12 +40,17 @@ function getPlaces(query) {
 function placesCallback(results, status) {
     var markerCount = 0;
     var bounds = new google.maps.LatLngBounds();
+    // also init the template while we're here
+
+    var template = document.getElementById("result-template").innerHTML;
+    var compiled_template = Handlebars.compile(template);
+
     if (status == google.maps.places.PlacesServiceStatus.OK) {
         for (var i = 0; i < Math.min(results.length, MAX_RESULTS); i++) {
             var place = results[i];
             console.log(place);
             createMarker(place, bounds, markerCount);
-            createPanel(place, markerCount);
+            createPanel(place, markerCount, compiled_template);
             markerCount++;
         }
     }
@@ -57,11 +62,24 @@ function placesCallback(results, status) {
     }  
 }
 
-function createPanel(place, markerCount) {
-    
-    var label = LABELS[markerCount];
-    var template = "<p>" + label + " - " + place.name + "</p>";
-    document.getElementById("results").innerHTML += template;
+function createPanel(place, markerCount, compiled_template) {
+
+    var priceLevel = "";
+    if ("price_level" in place) {
+        for (var i=1; i<=place.price_level; i++) {
+            priceLevel += "$";
+        }
+    }
+
+    var context = {
+        label: LABELS[markerCount],
+        name: place.name,
+        rating: place.rating,
+        price: priceLevel,
+        address: place.formatted_address
+    };
+    var rendered = compiled_template(context);
+    document.getElementById("results").innerHTML += rendered;
 }
 
 function clearPanels() {
@@ -132,3 +150,10 @@ searchBar.onkeypress = function(e) {
         handleSearch();
     }
 }
+
+$(document).ready(function()
+{
+    //var $scrollbar = $("#scrollbar1");
+
+    //$scrollbar.tinyscrollbar();
+});

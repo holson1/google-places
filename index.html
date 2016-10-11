@@ -7,6 +7,7 @@
     <link rel="stylesheet" type="text/css" href="style.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <link href="https://fonts.googleapis.com/css?family=Roboto:300" rel="stylesheet">
+    <!--<link rel="stylesheet" href="tinyscrollbar.css" type="text/css" media="screen"/>-->
     <script src="https://use.fontawesome.com/e246b2bd67.js"></script>
 </head>
 <body>
@@ -31,10 +32,31 @@
             <div class="map-area col-xs-7 col-sm-6 col-sm-offset-1">
                 <div id="map"></div>
             </div>
-            <div id="results" class="results col-xs-5 col-sm-4">
-                <div class="row result">
-                    <div class="col-xs-12">
-                        <p>Type a search and your results will appear here!</p>
+            <div id="scrollbar1" class="results col-xs-5 col-sm-4">
+                <div class="scrollbar"><div class="track"><div class="thumb"><div class="end"></div></div></div></div>
+                <div id="results" class="viewport">
+                    <div class="row result">
+                        <div class="col-xs-1">
+                            <p class="result-label">A</p>
+                        </div>
+                        <div class="col-xs-10">
+                            <div class="row">
+                                <div class="col-xs-6">
+                                    <p class="result-name">Billy's Pizza</p>
+                                </div>
+                                <div class="col-xs-3">
+                                    <p>****</p>
+                                </div>
+                                <div class="col-xs-3">
+                                    <p>$$</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <p>123 San Carlos Ave, San Ramon, CA, 94218</p>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -48,7 +70,39 @@
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAEquPt-M434Myb0MDLAtm9cOjoWf_nRDw&callback=initMap&libraries=places" async defer></script>
     <!-- Bootstrap -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <!-- Handlebars -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.5/handlebars.min.js"></script>
     <!-- my js -->
     <script type="text/javascript" src="maps.js"></script>
+    <!-- tiny scrollbar -->
+    <!--<script type="text/javascript" src="../../lib/jquery.tinyscrollbar.js"></script>
+    <script src="jquery.tinyscrollbar.min.js"></script>-->
+
+    <!-- result template -->
+    <script id="result-template" type="text/x-handlebars-template">
+        <div class="row result">
+            <div class="col-xs-1">
+                <p class="result-label">{{label}}</p>
+            </div>
+            <div class="col-xs-10">
+                <div class="row">
+                    <div class="col-xs-6">
+                        <p class="result-name">{{name}}</p>
+                    </div>
+                    <div class="col-xs-3">
+                        <p>{{rating}}</p>
+                    </div>
+                    <div class="col-xs-3">
+                        <p>{{price}}</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12">
+                        <p>{{address}}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </script>
 </body>
 </html>
