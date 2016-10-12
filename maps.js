@@ -64,6 +64,7 @@ function placesCallback(results, status) {
 
 function createPanel(place, markerCount, compiled_template) {
 
+    // convert price_level (e.g. 2) into dollar format
     var priceLevel = "";
     if ("price_level" in place) {
         for (var i=1; i<=place.price_level; i++) {
@@ -71,12 +72,34 @@ function createPanel(place, markerCount, compiled_template) {
         }
     }
 
+    // convert rating (e.g. 3.7) into star rating
+    var rating = (Math.round(place.rating * 2) / 2).toFixed(1);
+    var stars = [];
+    var halfStars = [];
+    var emptyStars = [];
+
+    for (var i = 0; i < 5; i++) {
+        if (rating == 0.5) {
+            halfStars.push(i);
+            rating -= 0.5;
+        }
+        else if (rating == 0) {
+            emptyStars.push(i);
+        }
+        else {
+            stars.push(i);
+            rating -= 1;
+        }
+    }
+
     var context = {
         label: LABELS[markerCount],
         name: place.name,
-        rating: place.rating,
         price: priceLevel,
-        address: place.formatted_address
+        address: place.formatted_address,
+        stars: stars,
+        halfStars: halfStars,
+        emptyStars: emptyStars
     };
     var rendered = compiled_template(context);
     document.getElementById("results").innerHTML += rendered;

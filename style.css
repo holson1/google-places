@@ -1,4 +1,4 @@
-h1,h2,h3,h4 {
+h1,h2,h3,h4,h5 {
     font-family: 'Roboto', sans-serif;
 }
 
@@ -41,18 +41,17 @@ p,span,a,li,input {
     height: 100%;
 }
 
-.results {
-    background-color: #eee;
-}
-
 .result {
-    /*height: 50px;*/
-    margin-bottom: 10px;
+    margin-bottom: -1px;
     padding-top: 5px;
-    /*padding-bottom: 5px;*/
-    background-color: #ccc;
+    background-color: white;
+    border: 1px solid #ddd;
 }
 
 .result-label {
-    margin-top: 13px;
+    margin-top: 10px;
+}
+
+.fa-star, .fa-star-o, .fa-star-half-o {
+    color: #f52;
 }
