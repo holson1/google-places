@@ -5,16 +5,18 @@ var MAX_RESULTS = 10;
 
 // Creates the initial map
 function initMap() {
-    console.log("initMap called");
+    //console.log("initMap called");
     map = new google.maps.Map($("#map")[0], {
-    center: {lat: 37.7749, lng: -122.4194},
-    zoom: 3
+    center: {lat: 39.7749, lng: -102.4194},
+    zoom: 3,
+    mapTypeControl: false,
+    streetViewControl: false
     });
 }
 
 // Checks the query to make sure it's valid
 function checkQuery(query) {
-    console.log("checkQuery called");
+    //console.log("checkQuery called");
     valid = true;
     if (query === "" || query === null) {
         valid = false;
@@ -24,7 +26,7 @@ function checkQuery(query) {
 
 // Calls the Google Places API with the query string
 function getPlaces(query) {
-    console.log("getPlaces called");
+    //console.log("getPlaces called");
     
     clearMarkers();
     clearPanels();
@@ -40,16 +42,23 @@ function getPlaces(query) {
 function placesCallback(results, status) {
     var markerCount = 0;
     var bounds = new google.maps.LatLngBounds();
-    // also init the template while we're here
 
+    // also init the template while we're here
     var template = $("#result-template").html();
     var compiled_template = Handlebars.compile(template);
+
+    // if this is our first time adding results, give the scroll area some height
+    if ($(".scroll-pane").css("height") != "400px") {
+        $(".scroll-pane").css("height", "400px");
+    }
+
+    var infoWindow = new google.maps.InfoWindow();
 
     if (status == google.maps.places.PlacesServiceStatus.OK) {
         for (var i = 0; i < Math.min(results.length, MAX_RESULTS); i++) {
             var place = results[i];
-            console.log(place);
-            createMarker(place, bounds, markerCount);
+            //console.log(place);
+            createMarker(place, bounds, markerCount, infoWindow);
             createPanel(place, markerCount, compiled_template);
             markerCount++;
         }
@@ -57,9 +66,9 @@ function placesCallback(results, status) {
     map.fitBounds(bounds);
     map.setCenter(bounds.getCenter());
     // fix map zoom if too far zoomed in
-    if (map.getZoom() > 17) {
-        map.setZoom(17);
-    }  
+    if (map.getZoom() > 15) {
+        map.setZoom(15);
+    }
 }
 
 function createPanel(place, markerCount, compiled_template) {
@@ -103,13 +112,16 @@ function createPanel(place, markerCount, compiled_template) {
     };
     var rendered = compiled_template(context);
     $("#results").append(rendered);
+
+    // get the last added result
+    console.log($(".result:eq(0)"));
 }
 
 function clearPanels() {
     $("#results").html("");
 }
 
-function createMarker(place, bounds, markerCount) {
+function createMarker(place, bounds, markerCount, infoWindow) {
     //console.log("create marker called");
     var placeLat = place.geometry.location.lat();
     var placeLng = place.geometry.location.lng();
@@ -123,6 +135,26 @@ function createMarker(place, bounds, markerCount) {
         title: place.name,
         label: LABELS[markerCount]
     });
+    
+    var contentString = place.name;
+
+    // handle marker onclick
+    marker.addListener('click', function() {
+
+          map.setCenter(marker.getPosition());
+          var markerPos = markers.indexOf(this);
+          $(".result").css("background-color", "white");
+          var result = $(".result:eq(" + markerPos + ")");
+          result.css("background-color", "#eee");
+
+          infoWindow.setContent(contentString);
+          infoWindow.open(map, marker);
+
+          //var element = $("#results").jScrollPane({/* ...settings... */});
+          //var api = element.data('jsp');
+          //api.scrollToY(result[0].offsetTop, false);
+    });
+
     markers.push(marker);
 }
 
@@ -173,7 +205,14 @@ $("#search-bar").keypress(function(e) {
     }
 });
 
-$(document).ready(function()
-{
-    $("#scrollbar1").tinyscrollbar();
+// Result panel click handler
+$("#results").on("click", ".result", function() {
+    $(".result").css("background-color", "white");
+    $(this).css("background-color", "#eee");
+
+    console.log(this);
+    var self = $(this);
+    var elementPos = $("#results").index($(this));
+    console.log(elementPos);
+    //map.setCenter(markers[elementPos].getPosition());
 });
