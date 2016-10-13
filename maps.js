@@ -6,7 +6,7 @@ var MAX_RESULTS = 10;
 // Creates the initial map
 function initMap() {
     console.log("initMap called");
-    map = new google.maps.Map(document.getElementById("map"), {
+    map = new google.maps.Map($("#map")[0], {
     center: {lat: 37.7749, lng: -122.4194},
     zoom: 3
     });
@@ -42,7 +42,7 @@ function placesCallback(results, status) {
     var bounds = new google.maps.LatLngBounds();
     // also init the template while we're here
 
-    var template = document.getElementById("result-template").innerHTML;
+    var template = $("#result-template").html();
     var compiled_template = Handlebars.compile(template);
 
     if (status == google.maps.places.PlacesServiceStatus.OK) {
@@ -102,11 +102,11 @@ function createPanel(place, markerCount, compiled_template) {
         emptyStars: emptyStars
     };
     var rendered = compiled_template(context);
-    document.getElementById("results").innerHTML += rendered;
+    $("#results").append(rendered);
 }
 
 function clearPanels() {
-    document.getElementById("results").innerHTML = "";
+    $("#results").html("");
 }
 
 function createMarker(place, bounds, markerCount) {
@@ -134,22 +134,22 @@ function clearMarkers() {
 }
 
 function showWarning(err) {
-    document.getElementById("search-warning").innerText = err;
+    $("#search-warning").text(err);
 }
 
 function clearWarning() {
-    document.getElementById("search-warning").innerText = "";
+    $("#search-warning").text("");
 }
 
 function clearSearch(query) {
-    var searchBar = document.getElementById("search-bar");
-    searchBar.value = "";
-    searchBar.placeholder = query;
+    var searchBar = $("#search-bar");
+    searchBar.val("");
+    searchBar.attr("placeholder", query);
 }
 
 function handleSearch() {
     clearWarning();
-    var query = document.getElementById("search-bar").value;
+    var query = $("#search-bar").val();
     //console.log("query = " + query);
     valid = checkQuery(query);
     //console.log(valid);
@@ -163,20 +163,17 @@ function handleSearch() {
 }
 
 // Search Button Event Handler
-var button = document.getElementById("search-button");
-button.onclick = function() {
+$("#search-button").click(function() {
     handleSearch();
-};
-var searchBar = document.getElementById("search-bar");
-searchBar.onkeypress = function(e) {
+});
+
+$("#search-bar").keypress(function(e) {
     if (e.keyCode == 13) {
         handleSearch();
     }
-}
+});
 
 $(document).ready(function()
 {
-    //var $scrollbar = $("#scrollbar1");
-
-    //$scrollbar.tinyscrollbar();
+    $("#scrollbar1").tinyscrollbar();
 });

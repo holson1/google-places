@@ -7,7 +7,7 @@
     <link rel="stylesheet" type="text/css" href="style.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <link href="https://fonts.googleapis.com/css?family=Roboto:300" rel="stylesheet">
-    <!--<link rel="stylesheet" href="tinyscrollbar.css" type="text/css" media="screen"/>-->
+    <link rel="stylesheet" href="tinyscrollbar.css" type="text/css" media="screen"/>
     <script src="https://use.fontawesome.com/e246b2bd67.js"></script>
 </head>
 <body>
@@ -33,38 +33,46 @@
                 <div id="map"></div>
             </div>
             <div id="scrollbar1" class="results col-xs-5 col-sm-4">
-                <div class="scrollbar"><div class="track"><div class="thumb"><div class="end"></div></div></div></div>
-                <div id="results" class="viewport">
-                    <div class="row result">
-                        <div class="col-xs-1 label-holder">
-                            <h5 class="result-label">A</h5>
+                <div class="scrollbar" height="400px">
+                    <div class="track" height="400px">
+                        <div class="thumb">
+                            <div class="end">
+                            </div>
                         </div>
-                        <div class="col-xs-10">
-                            <div class="row">
-                                <div class="col-xs-6">
-                                    <h5 class="result-name">Billy's Pizza</h4>
-                                </div>
+                    </div>
+                </div>
+                <div class="viewport">
+                    <div id="results" class="overview">
+                        <div class="row result">
+                            <div class="col-xs-1 label-holder">
+                                <h5 class="result-label">A</h5>
                             </div>
-                            <div class="row">
-                                <div class="col-xs-5">
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star-half-o"></i>
-                                    <i class="fa fa-star-o"></i>
+                            <div class="col-xs-10">
+                                <div class="row">
+                                    <div class="col-xs-6">
+                                        <h5 class="result-name">Billy's Pizza</h4>
+                                    </div>
                                 </div>
-                                <div class="col-xs-3">
-                                    <p>$$</p>
+                                <div class="row">
+                                    <div class="col-xs-5">
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star-half-o"></i>
+                                        <i class="fa fa-star-o"></i>
+                                    </div>
+                                    <div class="col-xs-3">
+                                        <p>$$</p>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-xs-12">
-                                    <p>123 San Carlos Ave, San Ramon, CA, 94218</p>
+                                <div class="row">
+                                    <div class="col-xs-12">
+                                        <p>123 San Carlos Ave, San Ramon, CA, 94218</p>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-
                 </div>
             </div>
         </div>
@@ -82,8 +90,7 @@
     <!-- my js -->
     <script type="text/javascript" src="maps.js"></script>
     <!-- tiny scrollbar -->
-    <!--<script type="text/javascript" src="../../lib/jquery.tinyscrollbar.js"></script>
-    <script src="jquery.tinyscrollbar.min.js"></script>-->
+    <script type="text/javascript" src="jquery.tinyscrollbar.js"></script>
 
     <!-- result template -->
     <script id="result-template" type="text/x-handlebars-template">
