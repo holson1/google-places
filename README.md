@@ -1,12 +1,13 @@
-Google Places App
-===================
+#Google Places App
 
 Henry Olson, 2016
 
 ----------
 
+
 About
 -------------
+
 
 My Google Places App allows users to search for places anywhere across the world! For example, try typing in "pizza in portland" and hit Enter. You will see the map populate with markers, and information about your results will display to the right. Try clicking on both!
 
@@ -18,8 +19,11 @@ My Google Places App allows users to search for places anywhere across the world
 > - Click on a result panel to pan the map to a marker
 > - Warning text when no search is entered
 
+
 Resources used
 -------------------
+
+
 > **Technologies:**
 > 
 > - HTML/CSS/JavaScript
