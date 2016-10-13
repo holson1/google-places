@@ -2,10 +2,11 @@ var map;
 var markers = [];
 var LABELS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 var MAX_RESULTS = 10;
+// keep this global so we can reference in numerous event handlers
+var infoWindow;
 
 // Creates the initial map
 function initMap() {
-    //console.log("initMap called");
     map = new google.maps.Map($("#map")[0], {
     center: {lat: 39.7749, lng: -102.4194},
     zoom: 3,
@@ -16,7 +17,6 @@ function initMap() {
 
 // Checks the query to make sure it's valid
 function checkQuery(query) {
-    //console.log("checkQuery called");
     valid = true;
     if (query === "" || query === null) {
         valid = false;
@@ -26,7 +26,6 @@ function checkQuery(query) {
 
 // Calls the Google Places API with the query string
 function getPlaces(query) {
-    //console.log("getPlaces called");
     
     clearMarkers();
     clearPanels();
@@ -39,6 +38,7 @@ function getPlaces(query) {
     service.textSearch(request, placesCallback);
 }
 
+// process the results of the Google Places API search
 function placesCallback(results, status) {
     var markerCount = 0;
     var bounds = new google.maps.LatLngBounds();
@@ -52,8 +52,10 @@ function placesCallback(results, status) {
         $(".scroll-pane").css("height", "400px");
     }
 
-    var infoWindow = new google.maps.InfoWindow();
+    // initialize the infoWindow
+    infoWindow = new google.maps.InfoWindow();
 
+    // for each result, create a marker and a panel
     if (status == google.maps.places.PlacesServiceStatus.OK) {
         for (var i = 0; i < Math.min(results.length, MAX_RESULTS); i++) {
             var place = results[i];
@@ -63,6 +65,8 @@ function placesCallback(results, status) {
             markerCount++;
         }
     }
+
+    // center the map around the results
     map.fitBounds(bounds);
     map.setCenter(bounds.getCenter());
     // fix map zoom if too far zoomed in
@@ -71,6 +75,7 @@ function placesCallback(results, status) {
     }
 }
 
+// build a panel for a particular result
 function createPanel(place, markerCount, compiled_template) {
 
     // convert price_level (e.g. 2) into dollar format
@@ -101,6 +106,7 @@ function createPanel(place, markerCount, compiled_template) {
         }
     }
 
+    // context for Handlebars template
     var context = {
         label: LABELS[markerCount],
         name: place.name,
@@ -110,23 +116,24 @@ function createPanel(place, markerCount, compiled_template) {
         halfStars: halfStars,
         emptyStars: emptyStars
     };
+
+    // compile template and add to list
     var rendered = compiled_template(context);
     $("#results").append(rendered);
-
-    // get the last added result
-    console.log($(".result:eq(0)"));
 }
 
+// clear all the panels
 function clearPanels() {
     $("#results").html("");
 }
 
+// create a marker for a particular result
 function createMarker(place, bounds, markerCount, infoWindow) {
-    //console.log("create marker called");
     var placeLat = place.geometry.location.lat();
     var placeLng = place.geometry.location.lng();
     var placeLatLng = new google.maps.LatLng(placeLat, placeLng);
 
+    // extend the map bounds to include the marker
     bounds.extend(placeLatLng);
 
     var marker = new google.maps.Marker({
@@ -141,23 +148,26 @@ function createMarker(place, bounds, markerCount, infoWindow) {
     // handle marker onclick
     marker.addListener('click', function() {
 
-          map.setCenter(marker.getPosition());
-          var markerPos = markers.indexOf(this);
-          $(".result").css("background-color", "white");
-          var result = $(".result:eq(" + markerPos + ")");
-          result.css("background-color", "#eee");
+        map.setCenter(marker.getPosition());
+        var markerPos = markers.indexOf(this);
 
-          infoWindow.setContent(contentString);
-          infoWindow.open(map, marker);
+        // highlight the selected result
+        $(".result").css("background-color", "white");
+        var result = $(".result:eq(" + markerPos + ")");
+        result.css("background-color", "#eee");
 
-          //var element = $("#results").jScrollPane({/* ...settings... */});
-          //var api = element.data('jsp');
-          //api.scrollToY(result[0].offsetTop, false);
+        // open the infoWindow
+        infoWindow.setContent(contentString);
+        infoWindow.open(map, marker);
+
+        // jump to the highlighted result
+        $("#results").scrollTo(result, 300);
     });
 
     markers.push(marker);
 }
 
+// remove markers from map and dereference them
 function clearMarkers() {
     for (var i = 0; i < markers.length; i++) {
         markers[i].setMap(null);
@@ -165,20 +175,24 @@ function clearMarkers() {
     markers.length = 0;
 }
 
+// display a warning text for an invalid search
 function showWarning(err) {
     $("#search-warning").text(err);
 }
 
+// remove the warning text when a valid search is performed
 function clearWarning() {
     $("#search-warning").text("");
 }
 
+// wipe the searchbox once the search is run
 function clearSearch(query) {
     var searchBar = $("#search-bar");
     searchBar.val("");
     searchBar.attr("placeholder", query);
 }
 
+// when a search is initiated, decide what to do with the input
 function handleSearch() {
     clearWarning();
     var query = $("#search-bar").val();
@@ -194,7 +208,7 @@ function handleSearch() {
     clearSearch(query);
 }
 
-// Search Button Event Handler
+// Search Event Handlers
 $("#search-button").click(function() {
     handleSearch();
 });
@@ -210,9 +224,8 @@ $("#results").on("click", ".result", function() {
     $(".result").css("background-color", "white");
     $(this).css("background-color", "#eee");
 
-    console.log(this);
-    var self = $(this);
-    var elementPos = $("#results").index($(this));
-    console.log(elementPos);
-    //map.setCenter(markers[elementPos].getPosition());
+    var elementPos = $(this).index();
+    map.setCenter(markers[elementPos].getPosition());
+    infoWindow.setContent(markers[elementPos].title);
+    infoWindow.open(map, markers[elementPos]);
 });
